@@ -30,21 +30,45 @@
                         @enderror
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal" class="form-label fw-semibold">Tanggal Sewa <span class="text-danger">*</span></label>
-                            <input type="date" name="tanggal" id="tanggal" class="form-control @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', $booking->tanggal) }}" required>
-                            @error('tanggal')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="p-3 bg-light rounded-3 mb-3 border">
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-event me-1"></i>Jadwal Mulai Sewa</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label for="tanggal" class="form-label fw-semibold">Tanggal Mulai <span class="text-danger">*</span></label>
+                                <input type="date" name="tanggal" id="tanggal" class="form-control @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', $booking->tanggal) }}" required>
+                                @error('tanggal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label for="jam" class="form-label fw-semibold">Jam Mulai Sewa <span class="text-danger">*</span></label>
-                            <input type="time" name="jam" id="jam" class="form-control @error('jam') is-invalid @enderror" value="{{ old('jam', \Carbon\Carbon::parse($booking->jam)->format('H:i')) }}" required>
-                            @error('jam')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <div class="col-md-6 mb-2">
+                                <label for="jam" class="form-label fw-semibold">Jam Mulai <span class="text-danger">*</span></label>
+                                <input type="time" name="jam" id="jam" class="form-control @error('jam') is-invalid @enderror" value="{{ old('jam', \Carbon\Carbon::parse($booking->jam)->format('H:i')) }}" required>
+                                @error('jam')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 mb-3 border">
+                        <h6 class="fw-bold text-success mb-3"><i class="bi bi-calendar-check me-1"></i>Jadwal Selesai / Dikembalikan</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label for="tanggal_selesai" class="form-label fw-semibold">Tanggal Dikembalikan <span class="text-danger">*</span></label>
+                                <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control @error('tanggal_selesai') is-invalid @enderror" value="{{ old('tanggal_selesai', $booking->tanggal_selesai ?? $booking->tanggal) }}" required>
+                                @error('tanggal_selesai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label for="jam_selesai" class="form-label fw-semibold">Jam Dikembalikan <span class="text-danger">*</span></label>
+                                <input type="time" name="jam_selesai" id="jam_selesai" class="form-control @error('jam_selesai') is-invalid @enderror" value="{{ old('jam_selesai', $booking->jam_selesai ? \Carbon\Carbon::parse($booking->jam_selesai)->format('H:i') : '') }}" required>
+                                @error('jam_selesai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -52,6 +76,9 @@
                         <label for="status" class="form-label fw-semibold">Status Reservasi <span class="text-danger">*</span></label>
                         <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                             <option value="menunggu" {{ old('status', $booking->status) === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="disewa" {{ old('status', $booking->status) === 'disewa' ? 'selected' : '' }}>Disewa</option>
+                            <option value="delay" {{ old('status', $booking->status) === 'delay' ? 'selected' : '' }}>Delay</option>
+                            <option value="reschedule" {{ old('status', $booking->status) === 'reschedule' ? 'selected' : '' }}>Reschedule</option>
                             <option value="selesai" {{ old('status', $booking->status) === 'selesai' ? 'selected' : '' }}>Selesai</option>
                             <option value="batal" {{ old('status', $booking->status) === 'batal' ? 'selected' : '' }}>Batal</option>
                         </select>
