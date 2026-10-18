@@ -27,8 +27,8 @@
                         <th class="text-center" style="width: 50px;">No</th>
                         <th>Nama Pemesan</th>
                         <th>No. HP / WA</th>
-                        <th>Tanggal</th>
-                        <th>Jam</th>
+                        <th>Mulai Sewa</th>
+                        <th>Selesai / Kembali</th>
                         <th>Catatan / Unit Moge</th>
                         <th>Status</th>
                         <th class="text-center" style="width: 140px;">Aksi</th>
@@ -44,12 +44,28 @@
                                     <i class="bi bi-whatsapp me-1"></i>{{ $booking->no_hp }}
                                 </a>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($booking->tanggal)->format('d/m/Y') }}</td>
-                            <td><span class="badge bg-secondary">{{ \Carbon\Carbon::parse($booking->jam)->format('H:i') }} WIB</span></td>
+                            <td>
+                                <div>{{ \Carbon\Carbon::parse($booking->tanggal)->format('d/m/Y') }}</div>
+                                <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ \Carbon\Carbon::parse($booking->jam)->format('H:i') }} WIB</small>
+                            </td>
+                            <td>
+                                @if($booking->tanggal_selesai && $booking->jam_selesai)
+                                    <div>{{ \Carbon\Carbon::parse($booking->tanggal_selesai)->format('d/m/Y') }}</div>
+                                    <small class="text-muted"><i class="bi bi-clock-history me-1"></i>{{ \Carbon\Carbon::parse($booking->jam_selesai)->format('H:i') }} WIB</small>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
                             <td>{{ $booking->catatan ?? '-' }}</td>
                             <td>
                                 @if($booking->status === 'menunggu')
                                     <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>Menunggu</span>
+                                @elseif($booking->status === 'disewa')
+                                    <span class="badge bg-primary px-2 py-1"><i class="bi bi-bicycle me-1"></i>Disewa</span>
+                                @elseif($booking->status === 'delay')
+                                    <span class="badge text-white px-2 py-1" style="background-color: #fd7e14;"><i class="bi bi-exclamation-triangle me-1"></i>Delay</span>
+                                @elseif($booking->status === 'reschedule')
+                                    <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-arrow-repeat me-1"></i>Reschedule</span>
                                 @elseif($booking->status === 'selesai')
                                     <span class="badge bg-success px-2 py-1"><i class="bi bi-check-circle me-1"></i>Selesai</span>
                                 @elseif($booking->status === 'batal')
